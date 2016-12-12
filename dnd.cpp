@@ -42,13 +42,13 @@ void DnD::fight(int bHit, int randomb, int fHit, int randomf, int secondWind, in
 	barb[1][0] = 25; 						//hp
 	barb[2][0] = bHit; 						//attack
 	barb[3][0] = 15; 						//ac
-	barb[4][0] = randomb; 					//d20 roll + mod
+	barb[4][0] = randomb; 						//d20 roll + mod
 	
 	int fight[5][1]; 						//declaring fighter array
 	fight[1][0] = 22;						//hp
-	fight[2][0] = fHit; 					//attack
+	fight[2][0] = fHit; 						//attack
 	fight[3][0] = 16; 						//ac
-	fight[4][0] = randomf; 					//d20 roll + mod
+	fight[4][0] = randomf; 						//d20 roll + mod
 
 
 	int initiativeb = (rand() % 20 +1) + 2; 			//barbarian initiative roll
@@ -57,12 +57,12 @@ void DnD::fight(int bHit, int randomb, int fHit, int randomf, int secondWind, in
 //	cout << "Barbarian Intiative roll: " << initiativeb << endl;
 //	cout << "Fighter Initiative roll: " << initiativef << endl;
 
-	int i = 1;											//secondWind counter
-	int a = 1;											//actionsurge counter
+	int i = 1;							//secondWind counter
+	int a = 1;							//actionsurge counter
 
 	int fFirst =1;//fighter first(used if fighter wins initiative. attacks barb before raging)
 
-	if (initiativeb >= initiativef) 					//if barb wins initiative
+	if (initiativeb >= initiativef) 				//if barb wins initiative
 	{
 		do
 		{
@@ -86,7 +86,7 @@ void DnD::fight(int bHit, int randomb, int fHit, int randomf, int secondWind, in
 
 //			cout << "Barbarian attack roll: " << randomb << endl;
 
-			if(randomb >= fight[3][0]) 					//if the barb hits the fighter
+			if(randomb >= fight[3][0]) 						//if the barb hits the fighter
 			{
 				fight[1][0] = fight[1][0] - barb[2][0]; //fighter hp = current hp - barb attack
 //				cout <<"Fighter HP: " << fight[1][0] << endl;
@@ -97,7 +97,7 @@ void DnD::fight(int bHit, int randomb, int fHit, int randomf, int secondWind, in
 					i--;
 				}	 
 			}
-			if (fight[1][0] <=0) 						//fighter hp <= 0
+			if (fight[1][0] <=0) 							//fighter hp <= 0
 			{
 //				cout << "Barbarian Wins" << endl;
 				barbarian++;
@@ -106,7 +106,7 @@ void DnD::fight(int bHit, int randomb, int fHit, int randomf, int secondWind, in
 			
 //			cout << "Fighter attack roll: " << randomf << endl;
 
-			if (randomf >= barb[3][0]) 				//if the figher hits the barb
+			if (randomf >= barb[3][0]) 						//if the figher hits the barb
 			{
 				barb[1][0] = barb[1][0] - (fight[2][0]/2); //barb loses health
 //				cout << "Barbarian HP: " << barb[1][0] << endl;
@@ -126,19 +126,19 @@ void DnD::fight(int bHit, int randomb, int fHit, int randomf, int secondWind, in
 			}
 				
 		
-			if (barb[1][0] <= 0) 						//barb hp <= 0
+			if (barb[1][0] <= 0) 							//barb hp <= 0
 			{
 //				cout << "Fighter Wins" << endl;
 				fighter++;
 				break;
 			}
 			
-			randomb = (rand() % 20 +1); 				//reroll attack dice
-			randomf = (rand() % 20 +1); 				//reroll attack dice
+			randomb = (rand() % 20 +1); 						//reroll attack dice
+			randomf = (rand() % 20 +1); 						//reroll attack dice
 		} while((barb[1][0] >=1) || (fight[1][0] >=1));
 	}
 
-	else if (initiativef > initiativeb)
+	else
 	{
 		do
 		{
