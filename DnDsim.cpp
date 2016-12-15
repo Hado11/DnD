@@ -9,35 +9,21 @@ class DnD
 {
 	public:
     int barb[5][1]; 		//declaring barbarian array
-	int fight[6][1]; 	//declaring fighter array
-	int pally[6][1];	//declaring paladin array
+    int fight[6][1]; 		//declaring fighter array
+    int pally[6][1];		//declaring paladin array
     int fightWeapon;            //fighter weapon select
     int fightStyle;             //fighter fighting style select
     int fightFeat;              //fighter feat select
     int pallyWeapon;            //paladin weapon selec
     int pallyStyle;             //paladin fight style select
-    int flatAttack;             //GWM attack roll
-    int modAttack;              //non GWM attack roll
-    int greatAxe;               //greataxe damage
-    int fgreatSword;            //fighter greatsword damage (redundant, but used in code)
-    int greatSword;             //greatsword damage
-    int gs1;                    //dice 1 for greatsword (used for rerolling 1's and 2's)
-    int gs2;                    //dice 2 for greatsword (used for rerolling 1's and 2's)
-    int longSword;              //longsword damage
-    int rapier;                 //rapier damage
-    int shortSword;             //shortsword damage
-    int secondWind;             //second wind roll for fighter
-    int pallySmite;             //pally smite damage
-
-    void diceRolls();                           	//dice roll function
-    void barbarian();                           	//barbarian info
-    void fighter();                             	//fighter info
-    void paladin();                             	//paladin info
-    void stats(int);                            	//final stat loadout for each opponent
-	void BarbaianvFighter( int, int&, int&);    	//barbvfighter function
-    void FightervPaladin( int, int&, int&);     	//fightervpally 
-	void BarbarianvPaladin(int, int&, int&);    	//barbvpally
-
+    
+    void barbarian(int, int , int);                                             //barbarian info
+    void fighter(int, int, int, int, int, int, int);                            //fighter info
+    void paladin(int, int, int, int, int);                                      //paladin info
+    void stats(int);                                                            //final stat loadout for each opponent
+    void BarbaianvFighter(int, int, int, int, int, int, int, int&, int&);       //barbvfighter function
+    void FightervPaladin(int, int, int, int, int, int, int&, int&);             //fightervpally 
+    void BarbarianvPaladin(int, int, int, int, int, int, int, int, int&, int&); //barbvpally
 }dnd;
 
 
@@ -51,10 +37,24 @@ int main()
     int stats;                                                  //tells 'stats' function which opponents to display
     while (choice != 0)
     {   
-        dnd.diceRolls();
-        int barbarian = 0; 					//barbarian wins counter
-	    int fighter = 0;					//fighter wins counter
-	    int paladin = 0;                            	//paladin wins counter
+        int flatAttack = (rand() % 20 +1); 			//flat roll to hit
+	int modAttack = (rand() % 20 +1); 			//roll to hit + modifiers
+	int greatAxe = (rand() % 12 +1) + 3; 			//greataxe damage roll
+	
+        int gs1 = (rand() % 6 + 1);                             //dice 1 for greatsword
+        int gs2 = (rand() % 6 + 1);                             //dice 2 for greatsword
+        int fgreatSword = (gs1) + (gs2) + 3;                    //fighter greatsword (redundant, but used in code)
+        int greatSword = (gs1) + (gs2) + 3; 	                //greatsword damage roll
+	int longSword = (rand() % 8 + 1) + 3;                   //longsword damage roll
+        int rapier =    (rand() % 8 + 1) + 3;                   //rapier damage roll
+        int shortSword = (rand() % 6 + 1) + 3;                  //shortsword damage roll
+
+        int secondWind = (rand() % 10 + 1) + 2;			//fighter second wind roll
+        int pallySmite = (rand() % 8 + 1) + (rand() % 8 +1);    //paladin smite damage roll
+        
+	int barbarian = 0; 					//barbarian wins counter
+	int fighter = 0;					//fighter wins counter
+	int paladin = 0;	                            	//paladin wins counter
         cout << "<=====Fight Simulation=======>" << endl;
         cout << "1. Barbarian   vs      Fighter" << endl;
         cout << "2. Fighter     vs      Paladin" << endl;
@@ -70,8 +70,8 @@ int main()
             case 1:
             {
                 stats = 1;
-                dnd.barbarian();
-                dnd.fighter();
+                dnd.barbarian(flatAttack, modAttack, greatAxe);
+                dnd.fighter(flatAttack, modAttack, fgreatSword, longSword, rapier, shortSword, secondWind);
                 dnd.stats(stats);
                 
                 cout << "<---------------------------------------------------->" << endl;
@@ -91,19 +91,19 @@ int main()
                 cout << "===================" << endl;
                 for (int i = 0; i < count; i++)
                 {
-                    dnd.BarbaianvFighter(watch, barbarian, fighter);
+                    dnd.BarbaianvFighter(watch, flatAttack, modAttack, gs1, gs2, greatAxe, secondWind, barbarian, fighter);
                 }
                 cout <<"<=====Total Wins=====>" << endl;
-	            cout << "Barbarian: " << barbarian << endl;
-	            cout << "Fighter: " << fighter << endl;
-	            cout <<"<=====Total Wins=====>" << endl;
+	        cout << "Barbarian: " << barbarian << endl;
+	        cout << "Fighter: " << fighter << endl;
+	        cout <<"<=====Total Wins=====>" << endl;
                 break;
             }
             case 2:
             {   
                 stats = 2;
-                dnd.fighter(); 
-                dnd.paladin();
+                dnd.fighter(flatAttack, modAttack, fgreatSword, longSword, rapier, shortSword, secondWind); 
+                dnd.paladin(flatAttack, modAttack, greatSword, longSword, pallySmite);
                 dnd.stats(stats);
 
                 cout << "<---------------------------------------------------->" << endl;
@@ -122,19 +122,19 @@ int main()
                 cout << "===================" << endl;
                 for (int i = 0; i < count; i++)
                 {
-                    dnd.FightervPaladin(watch, fighter, paladin);
+                    dnd.FightervPaladin(watch, flatAttack, modAttack, gs1, gs2, secondWind, fighter, paladin);
                 }
                 cout <<"<=====Total Wins=====>" << endl;
-	            cout << "Fighter: " << fighter << endl;
+	        cout << "Fighter: " << fighter << endl;
                 cout << "Paladin: " << paladin << endl;
-	            cout <<"<=====Total Wins=====>" << endl;
+	        cout <<"<=====Total Wins=====>" << endl;
                 break;
             }
             case 3:
             {
                 stats = 3;
-                dnd.barbarian();
-                dnd.paladin();
+                dnd.barbarian(flatAttack, modAttack, greatAxe);
+                dnd.paladin(flatAttack, modAttack, greatSword, longSword, pallySmite);
                 dnd.stats(stats);
 
                 cout << "<---------------------------------------------------->" << endl;
@@ -153,12 +153,12 @@ int main()
                 cout << "===================" << endl;
                 for (int i = 0; i < count; i++)
                 {
-                    dnd.BarbarianvPaladin(watch, barbarian, paladin);
+                    dnd.BarbarianvPaladin(watch, flatAttack, modAttack, gs1, gs2, greatAxe, greatSword, longSword, barbarian, paladin);
                 }
                 cout <<"<=====Total Wins=====>" << endl;
-	            cout << "Barbarian: " << barbarian << endl;
-	            cout << "Paladin: " << paladin << endl;
-	            cout <<"<=====Total Wins=====>" << endl;
+	        cout << "Barbarian: " << barbarian << endl;
+	        cout << "Paladin: " << paladin << endl;
+	        cout <<"<=====Total Wins=====>" << endl;
                 break;
             }
             case 4:
@@ -171,31 +171,10 @@ int main()
                 cout << "Please enter a number between 1 and 4." << endl;
             }
         }
-    };
-    
-
-		
+    };		
 }
 
-void DnD:: diceRolls()
-{
-    int flatAttack = (rand() % 20 +1); 				//flat roll to hit
-	int modAttack = (rand() % 20 +1); 			//roll to hit + modifiers
-	int greatAxe = (rand() % 12 +1) + 3; 			//greataxe damage roll
-	
-    int gs1 = (rand() % 6 + 1);                                 //dice 1 for greatsword
-    int gs2 = (rand() % 6 + 1);                                 //dice 2 for greatsword
-    int fgreatSword = (gs1) + (gs2) + 3;                      	//fighter greatsword (redundant, but used in code)
-    int greatSword = (gs1) + (gs2) + 3; 	                //greatsword damage roll
-	int longSword = (rand() % 8 + 1) + 3;                   //longsword damage roll
-    int rapier =    (rand() % 8 + 1) + 3;                       //rapier damage roll
-    int shortSword = (rand() % 6 + 1) + 3;                      //shortsword damage roll
-
-    int secondWind = (rand() % 10 + 1) + 2; 			//fighter second wind roll
-    int pallySmite = (rand() % 8 + 1) + (rand() % 8 +1);        //paladin smite damage roll  
-    
-}
-void DnD::barbarian()
+void DnD::barbarian(int flatAttack, int modAttack, int greatAxe)
 {
     barb[0][0] = 25;            //HP
     barb[1][0] = 15;            //AC
@@ -204,51 +183,51 @@ void DnD::barbarian()
     barb[4][0] = greatAxe +2;   //greataxe damage roll + rage
 }
 
-void DnD::fighter()
+void DnD::fighter(int flatAttack, int modAttack, int fgreatSword, int longSword, int rapier, int shortSword, int secondWind)
 {
 
-	cout << "<------FIGHTER WEAPON CHOICE------>" << endl;
-	cout << "What type of weapon for Paladin?" <<endl;
-	cout << "1. Greatsword" << endl;
-	cout << "2. Longsword + shield" << endl;
+    cout << "<------FIGHTER WEAPON CHOICE------>" << endl;
+    cout << "What type of weapon for Paladin?" <<endl;
+    cout << "1. Greatsword" << endl;
+    cout << "2. Longsword + shield" << endl;
     cout << "3. Dual Wielding" << endl;
-	cout << "<------FIGHTER WEAPON CHOICE------>" << endl;
-	cout << "Enter Selection: ";
-	cin >> fightWeapon;
-	cout << "===================" << endl;
+    cout << "<------FIGHTER WEAPON CHOICE------>" << endl;
+    cout << "Enter Selection: ";
+    cin >> fightWeapon;
+    cout << "===================" << endl;
 
-	if (fightWeapon == 1)           //if greatsword
+    if (fightWeapon == 1)           //if greatsword
     {
         fight[3][0] = fgreatSword;
         fight[2][0] = flatAttack;
         fight[1][0] = 16;
     }
 
-	else if (fightWeapon == 2 )     //if longsword + shield
-	{
-		cout << "<-----------FIGHTER FIGHTING STYLE----------->" << endl;
-		cout << "What type of fighting style for the Paladin?" << endl;
-		cout.width(15); cout << left << "1. Defense";
-        cout.width(30); cout << right << "(+1 AC)" << endl;
-		cout.width(15); cout << left << "2. Dueling";
-        cout.width(30); cout << right <<"(+2 damage)" << endl;
-		cout << "<-----------FIGHTER FIGHTING STYLE----------->" << endl;
-		cout << "Enter Selecting: ";
-		cin >> fightStyle;
-        cout << "===================" << endl;
+    else if (fightWeapon == 2 )     //if longsword + shield
+    {
+    	cout << "<-----------FIGHTER FIGHTING STYLE----------->" << endl;
+    	cout << "What type of fighting style for the Fighter?" << endl;
+    	cout.width(15); cout << left << "1. Defense";
+    	cout.width(30); cout << right << "(+1 AC)" << endl;
+    	cout.width(15); cout << left << "2. Dueling";
+    	cout.width(30); cout << right <<"(+2 damage)" << endl;
+    	cout << "<-----------FIGHTER FIGHTING STYLE----------->" << endl;
+    	cout << "Enter Selecting: ";
+    	cin >> fightStyle;
+    	cout << "===================" << endl;
     }
 
     else if (fightWeapon == 3)      //if rapier or shortsowrd
     {
         cout << "<-----------FIGHTER FIGHTING STYLE------------->" << endl;
-		cout << "What type of fighting style for the Paladin?" << endl;
-		cout.width(23); cout << left << "1. Defense"; 
+	cout << "What type of fighting style for the Fighter?" << endl;
+	cout.width(23); cout << left << "1. Defense"; 
         cout.width(25); cout << right << "(+1 AC)" << endl;
-		cout.width(23); cout << left << "2. Two-Weapon Fighting";
-		cout.width(25); cout << right << "(dual wield + mod damage)" << endl;
+	cout.width(23); cout << left << "2. Two-Weapon Fighting";
+	cout.width(25); cout << right << "(dual wield + mod damage)" << endl;
         cout << "<-----------FIGHTER FIGHTING STYLE------------->" << endl;
-		cout << "Enter Selecting: ";
-		cin >> fightStyle;
+	cout << "Enter Selecting: ";
+	cin >> fightStyle;
         cout << "===================" << endl;  
 
         cout << "<-------------DUAL WIELDING FEAT------------->" << endl;
@@ -278,25 +257,25 @@ void DnD::fighter()
             fight[2][0] = modAttack;
             fight[3][0] = rapier;
         }    
-        }
+    }
     else if (fightStyle == 1)
     {
      
-            fight[1][0] = 19;
-            fight[2][0] = modAttack;
-            fight[3][0] = longSword;
+        fight[1][0] = 19;
+        fight[2][0] = modAttack;
+        fight[3][0] = longSword;
    }
    else if (fightStyle ==2)
    {
-            fight[1][0] = 18;
-            fight[2][0] = modAttack;
-            fight[3][0] = longSword + 2;
+        fight[1][0] = 18;
+        fight[2][0] = modAttack;
+        fight[3][0] = longSword + 2;
    }
    else if (fightFeat == 1)
    {
-            fight[1][0] = 16;
-            fight[2][0] = modAttack;
-            fight[3][0] = longSword;
+        fight[1][0] = 16;
+        fight[2][0] = modAttack;
+        fight[3][0] = longSword;
    }
    
     fight[0][0] = 22;           //HP
@@ -308,7 +287,7 @@ void DnD::fighter()
    
 }
 
-void DnD::paladin()
+void DnD::paladin(int flatAttack, int modAttack, int greatSword, int longSword, int pallySmite)
 {
     //reroll so fighter and pally dont start off with the same roll
     flatAttack = (rand() % 20 + 1);
@@ -316,14 +295,14 @@ void DnD::paladin()
     longSword = (rand() % 8 + 1) + 3;
     
 
-	cout << "<------PALADIN WEAPON CHOICE------>" << endl;
-	cout << "What type of weapon for Paladin?" <<endl;
-	cout << "1. Greatsword" << endl;
-	cout << "2. Longsword + shield" << endl;
-	cout << "<------PALADIN WEAPON CHOICE------>" << endl;
-	cout << "Enter Selection: ";
-	cin >> pallyWeapon;
-	cout << "===================" << endl;
+    cout << "<------PALADIN WEAPON CHOICE------>" << endl;
+    cout << "What type of weapon for Paladin?" <<endl;
+    cout << "1. Greatsword" << endl;
+    cout << "2. Longsword + shield" << endl;
+    cout << "<------PALADIN WEAPON CHOICE------>" << endl;
+    cout << "Enter Selection: ";
+    cin >> pallyWeapon;
+    cout << "===================" << endl;
     
     if (pallyWeapon == 1)               //if greatsword
     {
@@ -332,19 +311,19 @@ void DnD::paladin()
         pally[1][0] = 16;
     }
 
-	else if (pallyWeapon == 2) 	//if longsword + shield   
-	{
-		cout << "<-----------PALADIN FIGHTING STYLE----------->" << endl;
-		cout << "What type of fighting style for the Paladin?" << endl;
-		cout.width(15);cout << left << "1. Defense";
+    else if (pallyWeapon == 2) 	//if longsword + shield   
+    {
+	cout << "<-----------PALADIN FIGHTING STYLE----------->" << endl;
+	cout << "What type of fighting style for the Paladin?" << endl;
+	cout.width(15);cout << left << "1. Defense";
         cout.width(30);cout << right<< "(+1 AC)" << endl;
-		cout.width(15);cout << left << "2. Dueling";
+	cout.width(15);cout << left << "2. Dueling";
         cout.width(30);cout << right << "(+2 damage)" << endl; 
-		cout << "<-----------PALADIN FIGHTING STYLE----------->" << endl;
-		cout << "Enter Selecting: ";
-		cin >> pallyStyle;
-		cout << "===================" << endl;
-         if (pallyStyle == 1)           //if defense style
+	cout << "<-----------PALADIN FIGHTING STYLE----------->" << endl;
+	cout << "Enter Selecting: ";
+	cin >> pallyStyle;
+	cout << "===================" << endl;
+        if (pallyStyle == 1)           //if defense style
         {
             pally[1][0] = 19;
             pally[2][0] = modAttack;
@@ -357,7 +336,7 @@ void DnD::paladin()
             pally[3][0] = longSword + 2;
         }
         
-	}
+    }
 
 
     pally[0][0] = 22;           //HP
@@ -374,7 +353,7 @@ void DnD::stats(int stats)
     if (stats == 1)                 //pulls barbarian & fighter loadout stats to display
     {
         int barbAC = barb[1][0];
-	    int barbHP = barb[0][0];
+	int barbHP = barb[0][0];
         int fightAC = fight[1][0];
         int fightHP = fight[0][0];
 
@@ -494,7 +473,7 @@ void DnD::stats(int stats)
         int fightAC = fight[1][0];
         int fightHP = fight[0][0];
         int pallyAC = pally[1][0];
-	    int pallyHP = pally[0][0];
+	int pallyHP = pally[0][0];
         string displayWeapon;
         string displayStyle;
         string displayFeat;
@@ -667,9 +646,9 @@ void DnD::stats(int stats)
     else if (stats == 3)            //pulls barbarian & paladin loadout stats to display
     {
         int barbAC = barb[1][0];
-	    int barbHP = barb[0][0];
-	    int pallyAC = pally[1][0];
-	    int pallyHP = pally[0][0];
+	int barbHP = barb[0][0];
+	int pallyAC = pally[1][0];
+	int pallyHP = pally[0][0];
         string displayWeapon;
         string displayStyle;
         string displayFeat;
@@ -734,7 +713,7 @@ void DnD::stats(int stats)
     }
 }
 
-void DnD::BarbaianvFighter(int watch, int& barbarian, int& fighter)
+void DnD::BarbaianvFighter(int watch, int flatAttack, int modAttack, int gs1, int gs2, int greatAxe, int secondWind, int& barbarian, int& fighter)
 {
     //reassinged variables for ease of typing
     //a few addintional stat calculations
@@ -744,7 +723,7 @@ void DnD::BarbaianvFighter(int watch, int& barbarian, int& fighter)
     int gs5 = gs1;
     int gs6 = gs2;
     int barbAC = barb[1][0];
-	int barbHP = barb[0][0];	
+    int barbHP = barb[0][0];	
     int barbAttack;
     int barbDamage;
 
@@ -1511,7 +1490,7 @@ void DnD::BarbaianvFighter(int watch, int& barbarian, int& fighter)
     } 
 }
 
-void DnD::FightervPaladin( int watch, int& fighter, int& paladin)
+void DnD::FightervPaladin(int watch, int flatAttack, int modAttack, int gs1, int gs2, int secondWind, int& fighter, int& paladin)
 {   
     //reassinged variables for ease of typing
     //a few additional stat calculations
@@ -1534,9 +1513,9 @@ void DnD::FightervPaladin( int watch, int& fighter, int& paladin)
     int bonusAction = 1;
         
     int pallyAC = pally[1][0];
-	int pallyHP = pally[0][0];
-	int pallyAttack = pally[2][0];
-	int pallyDamage = pally[3][0];
+    int pallyHP = pally[0][0];
+    int pallyAttack = pally[2][0];
+    int pallyDamage = pally[3][0];
     int smite = pally[4][0];
     int smiteCounter = 2;
     int Loh = pally[5][0];
@@ -2540,21 +2519,21 @@ void DnD::FightervPaladin( int watch, int& fighter, int& paladin)
 }
            
 
-void DnD::BarbarianvPaladin(int watch, int& barbarian, int& paladin)
+void DnD::BarbarianvPaladin(int watch, int flatAttack, int modAttack, int gs1, int gs2, int greatAxe, int greatSword, int longSword, int& barbarian, int& paladin)
 {
     //reassinged variable for ease of typing
     //a few additional stat calculatons
     int gs5 = gs1;
     int gs6 = gs2;
     int barbAC = barb[1][0];
-	int barbHP = barb[0][0];	
+    int barbHP = barb[0][0];	
     int barbAttack;
     int barbDamage;
 
-	int pallyAC = pally[1][0];
-	int pallyHP = pally[0][0];
-	int pallyAttack = pally[2][0];
-	int pallyDamage = pally[3][0];
+    int pallyAC = pally[1][0];
+    int pallyHP = pally[0][0];
+    int pallyAttack = pally[2][0];
+    int pallyDamage = pally[3][0];
     int smite = pally[4][0];
     int smiteCounter = 2;
     int Loh = pally[5][0];
