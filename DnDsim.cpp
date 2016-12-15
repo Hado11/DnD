@@ -8,9 +8,9 @@ using namespace std;
 class DnD
 {
 	public:
-    int barb[5][1]; 			//declaring barbarian array
-	int fight[6][1]; 			//declaring fighter array
-	int pally[6][1];			//declaring paladin array
+    int barb[5][1]; 		//declaring barbarian array
+	int fight[6][1]; 	//declaring fighter array
+	int pally[6][1];	//declaring paladin array
     int fightWeapon;            //fighter weapon select
     int fightStyle;             //fighter fighting style select
     int fightFeat;              //fighter feat select
@@ -29,14 +29,14 @@ class DnD
     int secondWind;             //second wind roll for fighter
     int pallySmite;             //pally smite damage
 
-    void diceRolls();                           //dice roll function
-    void barbarian();                           //barbarian info
-    void fighter();                             //fighter info
-    void paladin();                             //paladin info
-    void stats(int);                            //final stat loadout for each opponent
-	void BarbaianvFighter( int, int&, int&);    //barbvfighter function
-    void FightervPaladin( int, int&, int&);     //fightervpally 
-	void BarbarianvPaladin(int, int&, int&);    //barbvpally
+    void diceRolls();                           	//dice roll function
+    void barbarian();                           	//barbarian info
+    void fighter();                             	//fighter info
+    void paladin();                             	//paladin info
+    void stats(int);                            	//final stat loadout for each opponent
+	void BarbaianvFighter( int, int&, int&);    	//barbvfighter function
+    void FightervPaladin( int, int&, int&);     	//fightervpally 
+	void BarbarianvPaladin(int, int&, int&);    	//barbvpally
 
 }dnd;
 
@@ -52,9 +52,9 @@ int main()
     while (choice != 0)
     {   
         dnd.diceRolls();
-        int barbarian = 0; 										//barbarian wins counter
-	    int fighter = 0;										//fighter wins counter
-	    int paladin = 0;                                        //paladin wins counter
+        int barbarian = 0; 					//barbarian wins counter
+	    int fighter = 0;					//fighter wins counter
+	    int paladin = 0;                            	//paladin wins counter
         cout << "<=====Fight Simulation=======>" << endl;
         cout << "1. Barbarian   vs      Fighter" << endl;
         cout << "2. Fighter     vs      Paladin" << endl;
@@ -179,19 +179,19 @@ int main()
 
 void DnD:: diceRolls()
 {
-    int flatAttack = (rand() % 20 +1); 						    //flat roll to hit
-	int modAttack = (rand() % 20 +1); 						    //roll to hit + modifiers
-	int greatAxe = (rand() % 12 +1) + 3; 						//greataxe damage roll
+    int flatAttack = (rand() % 20 +1); 				//flat roll to hit
+	int modAttack = (rand() % 20 +1); 			//roll to hit + modifiers
+	int greatAxe = (rand() % 12 +1) + 3; 			//greataxe damage roll
 	
     int gs1 = (rand() % 6 + 1);                                 //dice 1 for greatsword
     int gs2 = (rand() % 6 + 1);                                 //dice 2 for greatsword
-    int fgreatSword = (gs1) + (gs2) + 3;                        //fighter greatsword (redundant, but used in code)
-    int greatSword = (gs1) + (gs2) + 3; 	                    //greatsword damage roll
-	int longSword = (rand() % 8 + 1) + 3;                       //longsword damage roll
+    int fgreatSword = (gs1) + (gs2) + 3;                      	//fighter greatsword (redundant, but used in code)
+    int greatSword = (gs1) + (gs2) + 3; 	                //greatsword damage roll
+	int longSword = (rand() % 8 + 1) + 3;                   //longsword damage roll
     int rapier =    (rand() % 8 + 1) + 3;                       //rapier damage roll
     int shortSword = (rand() % 6 + 1) + 3;                      //shortsword damage roll
 
-    int secondWind = (rand() % 10 + 1) + 2; 				    //fighter second wind roll
+    int secondWind = (rand() % 10 + 1) + 2; 			//fighter second wind roll
     int pallySmite = (rand() % 8 + 1) + (rand() % 8 +1);        //paladin smite damage roll  
     
 }
@@ -332,7 +332,7 @@ void DnD::paladin()
         pally[1][0] = 16;
     }
 
-	else if (pallyWeapon == 2)          //if longsword + shield   
+	else if (pallyWeapon == 2) 	//if longsword + shield   
 	{
 		cout << "<-----------PALADIN FIGHTING STYLE----------->" << endl;
 		cout << "What type of fighting style for the Paladin?" << endl;
