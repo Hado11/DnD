@@ -271,12 +271,12 @@ void DnD::fighter(int flatAttack, int modAttack, int fgreatSword, int longSword,
         fight[2][0] = modAttack;
         fight[3][0] = longSword + 2;
    }
-   else if (fightFeat == 1)
+   /*else if (fightFeat == 1)
    {
         fight[1][0] = 16;
         fight[2][0] = modAttack;
         fight[3][0] = longSword;
-   }
+   }*/
    
     fight[0][0] = 22;           //HP
     //fight[1][0]               //AC
@@ -359,7 +359,7 @@ void DnD::stats(int stats)
 	
 	if (fightWeapon == 3 && fightStyle == 1)
     	{
-        	fightAC = 17;
+        	fightAC = fightAC + 1;
     	}
         string displayWeapon;
         string displayStyle;
@@ -480,7 +480,7 @@ void DnD::stats(int stats)
 	int pallyHP = pally[0][0];
 	if (fightWeapon == 3 && fightStyle == 1)
     	{
-        	fightAC = 17;
+        	fightAC = fightAC + 1;
     	}
         string displayWeapon;
         string displayStyle;
@@ -759,7 +759,7 @@ void DnD::BarbaianvFighter(int watch, int flatAttack, int modAttack, int gs1, in
     }
     if (fightWeapon == 3 && fightStyle == 1)
     {
-        fightAC = 17;
+        fightAC = fightAC + 1;
     }
 
     if (fightAC > 16)
@@ -1549,7 +1549,7 @@ void DnD::FightervPaladin(int watch, int flatAttack, int modAttack, int gs1, int
     }
     if (fightWeapon == 3 && fightStyle == 1)
     {
-        fightAC = 17;
+        fightAC = fightAC + 1;
     }
     
     if (pallyWeapon == 1)
